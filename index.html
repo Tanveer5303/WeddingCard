@@ -22,7 +22,7 @@
     --bg:#e9ded2;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
+  html{scroll-behavior:auto}
   body{
     font-family:'Cormorant Garamond',serif;
     background:var(--bg);
@@ -885,13 +885,41 @@
     function goTo(id){
       var target = document.getElementById(id);
       if(!target) return;
-      try{
-        target.scrollIntoView({behavior:'smooth', block:'start'});
-      }catch(e){
-        var top = target.getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop || 0);
-        window.scrollTo(0, top);
-      }
       setActive(id);
+
+      var startY = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      var rectTop = target.getBoundingClientRect().top;
+      var destY = startY + rectTop;
+
+      /* clamp so we never try to scroll past the bottom */
+      var maxY = Math.max(0, (document.body.scrollHeight || document.documentElement.scrollHeight) - window.innerHeight);
+      if(destY > maxY) destY = maxY;
+      if(destY < 0) destY = 0;
+
+      var distance = destY - startY;
+      if(Math.abs(distance) < 2) return;
+
+      var duration = 550;
+      var startT = null;
+
+      function ease(t){ return t<0.5 ? 2*t*t : -1+(4-2*t)*t; } /* easeInOutQuad */
+
+      function step(ts){
+        if(startT === null) startT = ts;
+        var elapsed = ts - startT;
+        var progress = Math.min(elapsed / duration, 1);
+        var y = startY + distance * ease(progress);
+        window.scrollTo(0, y);
+        if(progress < 1){
+          requestAnimationFrame(step);
+        }
+      }
+
+      if('requestAnimationFrame' in window){
+        requestAnimationFrame(step);
+      } else {
+        window.scrollTo(0, destY);
+      }
     }
 
     document.querySelectorAll('.nav-item').forEach(function(a){
