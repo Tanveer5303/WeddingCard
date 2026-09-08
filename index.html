@@ -219,15 +219,19 @@
   .card-floral.tl{top:-6px;left:-6px}
   .card-floral.br{bottom:-6px;right:-6px;transform:rotate(180deg)}
   .event > .event-badge, .event > .event-body{position:relative;z-index:1}
-  .card-floral .c-stem{fill:none;stroke:var(--sage-deep);stroke-width:2.4;stroke-linecap:round;stroke-dasharray:var(--len);stroke-dashoffset:var(--len)}
-  .card-floral .c-leaf{fill:var(--sage);opacity:0;transform-box:fill-box;transform-origin:center}
-  .card-floral .c-petal{transform-box:fill-box;transform-origin:center;opacity:0}
-  .card-floral .c-core{fill:var(--gold);opacity:0;transform-box:fill-box;transform-origin:center}
-  /* animate in when the card becomes visible */
-  .event.in .card-floral .c-stem{animation:draw 1.8s cubic-bezier(.6,.02,.2,1) forwards}
-  .event.in .card-floral .c-leaf{animation:leafPop .8s cubic-bezier(.2,.8,.3,1.2) forwards}
-  .event.in .card-floral .c-petal{animation:bloom 1s cubic-bezier(.2,.8,.3,1.2) forwards}
-  .event.in .card-floral .c-core{animation:leafPop .7s cubic-bezier(.2,.8,.3,1.2) forwards}
+  .card-floral .c-stem{fill:none;stroke:var(--sage-deep);stroke-width:2.4;stroke-linecap:round}
+  .card-floral .c-leaf{fill:var(--sage);transform-box:fill-box;transform-origin:center}
+  .card-floral .c-petal{transform-box:fill-box;transform-origin:center}
+  .card-floral .c-core{fill:var(--gold);transform-box:fill-box;transform-origin:center}
+  /* when JS is active, hide first then bloom in on scroll */
+  body.js-anim .card-floral .c-stem{stroke-dasharray:var(--len);stroke-dashoffset:var(--len)}
+  body.js-anim .card-floral .c-leaf,
+  body.js-anim .card-floral .c-petal,
+  body.js-anim .card-floral .c-core{opacity:0}
+  body.js-anim .event.in .card-floral .c-stem{animation:draw 1.8s cubic-bezier(.6,.02,.2,1) forwards}
+  body.js-anim .event.in .card-floral .c-leaf{animation:leafPop .8s cubic-bezier(.2,.8,.3,1.2) forwards}
+  body.js-anim .event.in .card-floral .c-petal{animation:bloom 1s cubic-bezier(.2,.8,.3,1.2) forwards}
+  body.js-anim .event.in .card-floral .c-core{animation:leafPop .7s cubic-bezier(.2,.8,.3,1.2) forwards}
   .event.in{opacity:1;transform:none}
   .event-body{display:flex;flex-direction:column;align-items:center;text-align:center}
   .event-badge{
@@ -580,6 +584,8 @@
     <div class="event-grid">
  
       <div class="event">
+        <svg class="card-floral tl" viewBox="0 0 170 170" fill="none" aria-hidden="true"><path class="c-stem" style="--len:150" d="M6 6 C52 24 82 52 100 92"/><path class="c-stem" style="--len:126;animation-delay:.3s" d="M6 6 C38 50 52 82 56 128"/><path class="c-stem" style="--len:104;animation-delay:.5s" d="M12 18 C60 16 102 30 142 26"/><path class="c-leaf" style="animation-delay:1s" d="M34 38 C50 34 64 44 68 58 C52 60 40 52 34 38Z"/><path class="c-leaf" style="animation-delay:1.15s" d="M52 82 C68 82 80 92 80 106 C64 104 54 96 52 82Z"/><path class="c-leaf" style="animation-delay:1.3s" d="M96 34 C110 26 128 30 134 42 C120 48 104 44 96 34Z"/><g transform="translate(102,94)"><ellipse class="c-petal" style="fill:var(--rose);animation-delay:1.4s" cx="0" cy="-19" rx="14" ry="19"/><ellipse class="c-petal" style="fill:var(--rose);animation-delay:1.5s" cx="18" cy="-6" rx="14" ry="19" transform="rotate(72 18 -6)"/><ellipse class="c-petal" style="fill:var(--rose);animation-delay:1.6s" cx="11" cy="15" rx="14" ry="19" transform="rotate(144 11 15)"/><ellipse class="c-petal" style="fill:var(--rose-deep);animation-delay:1.7s" cx="-11" cy="15" rx="14" ry="19" transform="rotate(216 -11 15)"/><ellipse class="c-petal" style="fill:var(--rose);animation-delay:1.8s" cx="-18" cy="-6" rx="14" ry="19" transform="rotate(288 -18 -6)"/><circle class="c-core" style="animation-delay:1.95s" cx="0" cy="-2" r="8.5"/></g><g transform="translate(50,128) scale(.7)"><ellipse class="c-petal" style="fill:#e7b5b5;animation-delay:1.85s" cx="0" cy="-18" rx="13" ry="18"/><ellipse class="c-petal" style="fill:#e7b5b5;animation-delay:1.95s" cx="17" cy="-5" rx="13" ry="18" transform="rotate(72 17 -5)"/><ellipse class="c-petal" style="fill:#e7b5b5;animation-delay:2.05s" cx="11" cy="14" rx="13" ry="18" transform="rotate(144 11 14)"/><ellipse class="c-petal" style="fill:var(--rose);animation-delay:2.15s" cx="-11" cy="14" rx="13" ry="18" transform="rotate(216 -11 14)"/><ellipse class="c-petal" style="fill:#e7b5b5;animation-delay:2.25s" cx="-17" cy="-5" rx="13" ry="18" transform="rotate(288 -17 -5)"/><circle class="c-core" style="animation-delay:2.35s" cx="0" cy="-2" r="7"/></g><g transform="translate(144,26) scale(.55)"><ellipse class="c-petal" style="fill:var(--rose);animation-delay:2.1s" cx="0" cy="0" rx="11" ry="15"/><circle class="c-core" style="animation-delay:2.25s" cx="0" cy="0" r="4.5"/></g></svg>
+        <svg class="card-floral br" viewBox="0 0 170 170" fill="none" aria-hidden="true"><path class="c-stem" style="--len:150" d="M6 6 C52 24 82 52 100 92"/><path class="c-stem" style="--len:126;animation-delay:.3s" d="M6 6 C38 50 52 82 56 128"/><path class="c-stem" style="--len:104;animation-delay:.5s" d="M12 18 C60 16 102 30 142 26"/><path class="c-leaf" style="animation-delay:1s" d="M34 38 C50 34 64 44 68 58 C52 60 40 52 34 38Z"/><path class="c-leaf" style="animation-delay:1.15s" d="M52 82 C68 82 80 92 80 106 C64 104 54 96 52 82Z"/><path class="c-leaf" style="animation-delay:1.3s" d="M96 34 C110 26 128 30 134 42 C120 48 104 44 96 34Z"/><g transform="translate(102,94)"><ellipse class="c-petal" style="fill:var(--rose);animation-delay:1.4s" cx="0" cy="-19" rx="14" ry="19"/><ellipse class="c-petal" style="fill:var(--rose);animation-delay:1.5s" cx="18" cy="-6" rx="14" ry="19" transform="rotate(72 18 -6)"/><ellipse class="c-petal" style="fill:var(--rose);animation-delay:1.6s" cx="11" cy="15" rx="14" ry="19" transform="rotate(144 11 15)"/><ellipse class="c-petal" style="fill:var(--rose-deep);animation-delay:1.7s" cx="-11" cy="15" rx="14" ry="19" transform="rotate(216 -11 15)"/><ellipse class="c-petal" style="fill:var(--rose);animation-delay:1.8s" cx="-18" cy="-6" rx="14" ry="19" transform="rotate(288 -18 -6)"/><circle class="c-core" style="animation-delay:1.95s" cx="0" cy="-2" r="8.5"/></g><g transform="translate(50,128) scale(.7)"><ellipse class="c-petal" style="fill:#e7b5b5;animation-delay:1.85s" cx="0" cy="-18" rx="13" ry="18"/><ellipse class="c-petal" style="fill:#e7b5b5;animation-delay:1.95s" cx="17" cy="-5" rx="13" ry="18" transform="rotate(72 17 -5)"/><ellipse class="c-petal" style="fill:#e7b5b5;animation-delay:2.05s" cx="11" cy="14" rx="13" ry="18" transform="rotate(144 11 14)"/><ellipse class="c-petal" style="fill:var(--rose);animation-delay:2.15s" cx="-11" cy="14" rx="13" ry="18" transform="rotate(216 -11 14)"/><ellipse class="c-petal" style="fill:#e7b5b5;animation-delay:2.25s" cx="-17" cy="-5" rx="13" ry="18" transform="rotate(288 -17 -5)"/><circle class="c-core" style="animation-delay:2.35s" cx="0" cy="-2" r="7"/></g><g transform="translate(144,26) scale(.55)"><ellipse class="c-petal" style="fill:var(--rose);animation-delay:2.1s" cx="0" cy="0" rx="11" ry="15"/><circle class="c-core" style="animation-delay:2.25s" cx="0" cy="0" r="4.5"/></g></svg>
         <div class="event-badge"><span class="num">I</span><span class="lbl">First</span></div>
         <div class="event-body">
           <h3>Haldi</h3>
@@ -597,6 +603,8 @@
       </div>
  
       <div class="event">
+        <svg class="card-floral tl" viewBox="0 0 170 170" fill="none" aria-hidden="true"><path class="c-stem" style="--len:150" d="M6 6 C52 24 82 52 100 92"/><path class="c-stem" style="--len:126;animation-delay:.3s" d="M6 6 C38 50 52 82 56 128"/><path class="c-stem" style="--len:104;animation-delay:.5s" d="M12 18 C60 16 102 30 142 26"/><path class="c-leaf" style="animation-delay:1s" d="M34 38 C50 34 64 44 68 58 C52 60 40 52 34 38Z"/><path class="c-leaf" style="animation-delay:1.15s" d="M52 82 C68 82 80 92 80 106 C64 104 54 96 52 82Z"/><path class="c-leaf" style="animation-delay:1.3s" d="M96 34 C110 26 128 30 134 42 C120 48 104 44 96 34Z"/><g transform="translate(102,94)"><ellipse class="c-petal" style="fill:var(--rose);animation-delay:1.4s" cx="0" cy="-19" rx="14" ry="19"/><ellipse class="c-petal" style="fill:var(--rose);animation-delay:1.5s" cx="18" cy="-6" rx="14" ry="19" transform="rotate(72 18 -6)"/><ellipse class="c-petal" style="fill:var(--rose);animation-delay:1.6s" cx="11" cy="15" rx="14" ry="19" transform="rotate(144 11 15)"/><ellipse class="c-petal" style="fill:var(--rose-deep);animation-delay:1.7s" cx="-11" cy="15" rx="14" ry="19" transform="rotate(216 -11 15)"/><ellipse class="c-petal" style="fill:var(--rose);animation-delay:1.8s" cx="-18" cy="-6" rx="14" ry="19" transform="rotate(288 -18 -6)"/><circle class="c-core" style="animation-delay:1.95s" cx="0" cy="-2" r="8.5"/></g><g transform="translate(50,128) scale(.7)"><ellipse class="c-petal" style="fill:#e7b5b5;animation-delay:1.85s" cx="0" cy="-18" rx="13" ry="18"/><ellipse class="c-petal" style="fill:#e7b5b5;animation-delay:1.95s" cx="17" cy="-5" rx="13" ry="18" transform="rotate(72 17 -5)"/><ellipse class="c-petal" style="fill:#e7b5b5;animation-delay:2.05s" cx="11" cy="14" rx="13" ry="18" transform="rotate(144 11 14)"/><ellipse class="c-petal" style="fill:var(--rose);animation-delay:2.15s" cx="-11" cy="14" rx="13" ry="18" transform="rotate(216 -11 14)"/><ellipse class="c-petal" style="fill:#e7b5b5;animation-delay:2.25s" cx="-17" cy="-5" rx="13" ry="18" transform="rotate(288 -17 -5)"/><circle class="c-core" style="animation-delay:2.35s" cx="0" cy="-2" r="7"/></g><g transform="translate(144,26) scale(.55)"><ellipse class="c-petal" style="fill:var(--rose);animation-delay:2.1s" cx="0" cy="0" rx="11" ry="15"/><circle class="c-core" style="animation-delay:2.25s" cx="0" cy="0" r="4.5"/></g></svg>
+        <svg class="card-floral br" viewBox="0 0 170 170" fill="none" aria-hidden="true"><path class="c-stem" style="--len:150" d="M6 6 C52 24 82 52 100 92"/><path class="c-stem" style="--len:126;animation-delay:.3s" d="M6 6 C38 50 52 82 56 128"/><path class="c-stem" style="--len:104;animation-delay:.5s" d="M12 18 C60 16 102 30 142 26"/><path class="c-leaf" style="animation-delay:1s" d="M34 38 C50 34 64 44 68 58 C52 60 40 52 34 38Z"/><path class="c-leaf" style="animation-delay:1.15s" d="M52 82 C68 82 80 92 80 106 C64 104 54 96 52 82Z"/><path class="c-leaf" style="animation-delay:1.3s" d="M96 34 C110 26 128 30 134 42 C120 48 104 44 96 34Z"/><g transform="translate(102,94)"><ellipse class="c-petal" style="fill:var(--rose);animation-delay:1.4s" cx="0" cy="-19" rx="14" ry="19"/><ellipse class="c-petal" style="fill:var(--rose);animation-delay:1.5s" cx="18" cy="-6" rx="14" ry="19" transform="rotate(72 18 -6)"/><ellipse class="c-petal" style="fill:var(--rose);animation-delay:1.6s" cx="11" cy="15" rx="14" ry="19" transform="rotate(144 11 15)"/><ellipse class="c-petal" style="fill:var(--rose-deep);animation-delay:1.7s" cx="-11" cy="15" rx="14" ry="19" transform="rotate(216 -11 15)"/><ellipse class="c-petal" style="fill:var(--rose);animation-delay:1.8s" cx="-18" cy="-6" rx="14" ry="19" transform="rotate(288 -18 -6)"/><circle class="c-core" style="animation-delay:1.95s" cx="0" cy="-2" r="8.5"/></g><g transform="translate(50,128) scale(.7)"><ellipse class="c-petal" style="fill:#e7b5b5;animation-delay:1.85s" cx="0" cy="-18" rx="13" ry="18"/><ellipse class="c-petal" style="fill:#e7b5b5;animation-delay:1.95s" cx="17" cy="-5" rx="13" ry="18" transform="rotate(72 17 -5)"/><ellipse class="c-petal" style="fill:#e7b5b5;animation-delay:2.05s" cx="11" cy="14" rx="13" ry="18" transform="rotate(144 11 14)"/><ellipse class="c-petal" style="fill:var(--rose);animation-delay:2.15s" cx="-11" cy="14" rx="13" ry="18" transform="rotate(216 -11 14)"/><ellipse class="c-petal" style="fill:#e7b5b5;animation-delay:2.25s" cx="-17" cy="-5" rx="13" ry="18" transform="rotate(288 -17 -5)"/><circle class="c-core" style="animation-delay:2.35s" cx="0" cy="-2" r="7"/></g><g transform="translate(144,26) scale(.55)"><ellipse class="c-petal" style="fill:var(--rose);animation-delay:2.1s" cx="0" cy="0" rx="11" ry="15"/><circle class="c-core" style="animation-delay:2.25s" cx="0" cy="0" r="4.5"/></g></svg>
         <div class="event-badge"><span class="num">II</span><span class="lbl">Second</span></div>
         <div class="event-body">
           <h3>Nikah</h3>
@@ -614,6 +622,8 @@
       </div>
  
       <div class="event">
+        <svg class="card-floral tl" viewBox="0 0 170 170" fill="none" aria-hidden="true"><path class="c-stem" style="--len:150" d="M6 6 C52 24 82 52 100 92"/><path class="c-stem" style="--len:126;animation-delay:.3s" d="M6 6 C38 50 52 82 56 128"/><path class="c-stem" style="--len:104;animation-delay:.5s" d="M12 18 C60 16 102 30 142 26"/><path class="c-leaf" style="animation-delay:1s" d="M34 38 C50 34 64 44 68 58 C52 60 40 52 34 38Z"/><path class="c-leaf" style="animation-delay:1.15s" d="M52 82 C68 82 80 92 80 106 C64 104 54 96 52 82Z"/><path class="c-leaf" style="animation-delay:1.3s" d="M96 34 C110 26 128 30 134 42 C120 48 104 44 96 34Z"/><g transform="translate(102,94)"><ellipse class="c-petal" style="fill:var(--rose);animation-delay:1.4s" cx="0" cy="-19" rx="14" ry="19"/><ellipse class="c-petal" style="fill:var(--rose);animation-delay:1.5s" cx="18" cy="-6" rx="14" ry="19" transform="rotate(72 18 -6)"/><ellipse class="c-petal" style="fill:var(--rose);animation-delay:1.6s" cx="11" cy="15" rx="14" ry="19" transform="rotate(144 11 15)"/><ellipse class="c-petal" style="fill:var(--rose-deep);animation-delay:1.7s" cx="-11" cy="15" rx="14" ry="19" transform="rotate(216 -11 15)"/><ellipse class="c-petal" style="fill:var(--rose);animation-delay:1.8s" cx="-18" cy="-6" rx="14" ry="19" transform="rotate(288 -18 -6)"/><circle class="c-core" style="animation-delay:1.95s" cx="0" cy="-2" r="8.5"/></g><g transform="translate(50,128) scale(.7)"><ellipse class="c-petal" style="fill:#e7b5b5;animation-delay:1.85s" cx="0" cy="-18" rx="13" ry="18"/><ellipse class="c-petal" style="fill:#e7b5b5;animation-delay:1.95s" cx="17" cy="-5" rx="13" ry="18" transform="rotate(72 17 -5)"/><ellipse class="c-petal" style="fill:#e7b5b5;animation-delay:2.05s" cx="11" cy="14" rx="13" ry="18" transform="rotate(144 11 14)"/><ellipse class="c-petal" style="fill:var(--rose);animation-delay:2.15s" cx="-11" cy="14" rx="13" ry="18" transform="rotate(216 -11 14)"/><ellipse class="c-petal" style="fill:#e7b5b5;animation-delay:2.25s" cx="-17" cy="-5" rx="13" ry="18" transform="rotate(288 -17 -5)"/><circle class="c-core" style="animation-delay:2.35s" cx="0" cy="-2" r="7"/></g><g transform="translate(144,26) scale(.55)"><ellipse class="c-petal" style="fill:var(--rose);animation-delay:2.1s" cx="0" cy="0" rx="11" ry="15"/><circle class="c-core" style="animation-delay:2.25s" cx="0" cy="0" r="4.5"/></g></svg>
+        <svg class="card-floral br" viewBox="0 0 170 170" fill="none" aria-hidden="true"><path class="c-stem" style="--len:150" d="M6 6 C52 24 82 52 100 92"/><path class="c-stem" style="--len:126;animation-delay:.3s" d="M6 6 C38 50 52 82 56 128"/><path class="c-stem" style="--len:104;animation-delay:.5s" d="M12 18 C60 16 102 30 142 26"/><path class="c-leaf" style="animation-delay:1s" d="M34 38 C50 34 64 44 68 58 C52 60 40 52 34 38Z"/><path class="c-leaf" style="animation-delay:1.15s" d="M52 82 C68 82 80 92 80 106 C64 104 54 96 52 82Z"/><path class="c-leaf" style="animation-delay:1.3s" d="M96 34 C110 26 128 30 134 42 C120 48 104 44 96 34Z"/><g transform="translate(102,94)"><ellipse class="c-petal" style="fill:var(--rose);animation-delay:1.4s" cx="0" cy="-19" rx="14" ry="19"/><ellipse class="c-petal" style="fill:var(--rose);animation-delay:1.5s" cx="18" cy="-6" rx="14" ry="19" transform="rotate(72 18 -6)"/><ellipse class="c-petal" style="fill:var(--rose);animation-delay:1.6s" cx="11" cy="15" rx="14" ry="19" transform="rotate(144 11 15)"/><ellipse class="c-petal" style="fill:var(--rose-deep);animation-delay:1.7s" cx="-11" cy="15" rx="14" ry="19" transform="rotate(216 -11 15)"/><ellipse class="c-petal" style="fill:var(--rose);animation-delay:1.8s" cx="-18" cy="-6" rx="14" ry="19" transform="rotate(288 -18 -6)"/><circle class="c-core" style="animation-delay:1.95s" cx="0" cy="-2" r="8.5"/></g><g transform="translate(50,128) scale(.7)"><ellipse class="c-petal" style="fill:#e7b5b5;animation-delay:1.85s" cx="0" cy="-18" rx="13" ry="18"/><ellipse class="c-petal" style="fill:#e7b5b5;animation-delay:1.95s" cx="17" cy="-5" rx="13" ry="18" transform="rotate(72 17 -5)"/><ellipse class="c-petal" style="fill:#e7b5b5;animation-delay:2.05s" cx="11" cy="14" rx="13" ry="18" transform="rotate(144 11 14)"/><ellipse class="c-petal" style="fill:var(--rose);animation-delay:2.15s" cx="-11" cy="14" rx="13" ry="18" transform="rotate(216 -11 14)"/><ellipse class="c-petal" style="fill:#e7b5b5;animation-delay:2.25s" cx="-17" cy="-5" rx="13" ry="18" transform="rotate(288 -17 -5)"/><circle class="c-core" style="animation-delay:2.35s" cx="0" cy="-2" r="7"/></g><g transform="translate(144,26) scale(.55)"><ellipse class="c-petal" style="fill:var(--rose);animation-delay:2.1s" cx="0" cy="0" rx="11" ry="15"/><circle class="c-core" style="animation-delay:2.25s" cx="0" cy="0" r="4.5"/></g></svg>
         <div class="event-badge"><span class="num">III</span><span class="lbl">Third</span></div>
         <div class="event-body">
           <h3>Waleema</h3>
@@ -749,49 +759,6 @@
   })();
  
   /* ---- unified scroll reveals ---- */
-  /* inject floral corner sprays into each event card */
-  (function(){
-    var cardFloral = ''
-      + '<path class="c-stem" style="--len:150" d="M6 6 C52 24 82 52 100 92"/>'
-      + '<path class="c-stem" style="--len:126;animation-delay:.3s" d="M6 6 C38 50 52 82 56 128"/>'
-      + '<path class="c-stem" style="--len:104;animation-delay:.5s" d="M12 18 C60 16 102 30 142 26"/>'
-      + '<path class="c-leaf" style="animation-delay:1s" d="M34 38 C50 34 64 44 68 58 C52 60 40 52 34 38Z"/>'
-      + '<path class="c-leaf" style="animation-delay:1.15s" d="M52 82 C68 82 80 92 80 106 C64 104 54 96 52 82Z"/>'
-      + '<path class="c-leaf" style="animation-delay:1.3s" d="M96 34 C110 26 128 30 134 42 C120 48 104 44 96 34Z"/>'
-      + '<g transform="translate(102,94)">'
-      +   '<ellipse class="c-petal" style="fill:var(--rose);animation-delay:1.4s" cx="0" cy="-19" rx="14" ry="19"/>'
-      +   '<ellipse class="c-petal" style="fill:var(--rose);animation-delay:1.5s" cx="18" cy="-6" rx="14" ry="19" transform="rotate(72 18 -6)"/>'
-      +   '<ellipse class="c-petal" style="fill:var(--rose);animation-delay:1.6s" cx="11" cy="15" rx="14" ry="19" transform="rotate(144 11 15)"/>'
-      +   '<ellipse class="c-petal" style="fill:var(--rose-deep);animation-delay:1.7s" cx="-11" cy="15" rx="14" ry="19" transform="rotate(216 -11 15)"/>'
-      +   '<ellipse class="c-petal" style="fill:var(--rose);animation-delay:1.8s" cx="-18" cy="-6" rx="14" ry="19" transform="rotate(288 -18 -6)"/>'
-      +   '<circle class="c-core" style="animation-delay:1.95s" cx="0" cy="-2" r="8.5"/>'
-      + '</g>'
-      + '<g transform="translate(50,128) scale(.7)">'
-      +   '<ellipse class="c-petal" style="fill:#e7b5b5;animation-delay:1.85s" cx="0" cy="-18" rx="13" ry="18"/>'
-      +   '<ellipse class="c-petal" style="fill:#e7b5b5;animation-delay:1.95s" cx="17" cy="-5" rx="13" ry="18" transform="rotate(72 17 -5)"/>'
-      +   '<ellipse class="c-petal" style="fill:#e7b5b5;animation-delay:2.05s" cx="11" cy="14" rx="13" ry="18" transform="rotate(144 11 14)"/>'
-      +   '<ellipse class="c-petal" style="fill:var(--rose);animation-delay:2.15s" cx="-11" cy="14" rx="13" ry="18" transform="rotate(216 -11 14)"/>'
-      +   '<ellipse class="c-petal" style="fill:#e7b5b5;animation-delay:2.25s" cx="-17" cy="-5" rx="13" ry="18" transform="rotate(288 -17 -5)"/>'
-      +   '<circle class="c-core" style="animation-delay:2.35s" cx="0" cy="-2" r="7"/>'
-      + '</g>'
-      + '<g transform="translate(144,26) scale(.55)">'
-      +   '<ellipse class="c-petal" style="fill:var(--rose);animation-delay:2.1s" cx="0" cy="0" rx="11" ry="15"/>'
-      +   '<circle class="c-core" style="animation-delay:2.25s" cx="0" cy="0" r="4.5"/>'
-      + '</g>';
- 
-    document.querySelectorAll('.event').forEach(function(ev){
-      ['tl','br'].forEach(function(pos){
-        var svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
-        svg.setAttribute('class','card-floral '+pos);
-        svg.setAttribute('viewBox','0 0 170 170');
-        svg.setAttribute('fill','none');
-        svg.setAttribute('aria-hidden','true');
-        svg.innerHTML = cardFloral;
-        ev.insertBefore(svg, ev.firstChild);
-      });
-    });
-  })();
- 
   /* ---- gentle rose petals inside each event card ---- */
   (function(){
     if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -849,16 +816,9 @@
  
     revealTargets.forEach(function(el){ io.observe(el); });
  
-    /* safety net: if anything hasn't revealed within 3.5s, force it visible */
-    setTimeout(function(){
-      revealTargets.forEach(function(el){
-        var r = el.getBoundingClientRect();
-        if(r.top < window.innerHeight && !el.classList.contains('in')){
-          el.classList.add('in');
-          if(el.classList.contains('draw-on-view')) el.classList.add('draw');
-        }
-      });
-    }, 3500);
+    /* safety net: after 3s, force-reveal EVERYTHING so decorative
+       florals/glow always appear even if the observer misbehaves */
+    setTimeout(function(){ revealAll(); }, 3000);
   } else {
     /* no IntersectionObserver support → just show everything */
     revealAll();
