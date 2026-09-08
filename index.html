@@ -22,7 +22,7 @@
     --bg:#e9ded2;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:auto}
+  html{scroll-behavior:smooth}
   body{
     font-family:'Cormorant Garamond',serif;
     background:var(--bg);
@@ -31,7 +31,7 @@
     overflow-x:hidden;
   }
   .amiri{font-family:'Amiri',serif}
-
+ 
   /* ============ ADDED MOTION ============ */
   /* falling petals + sparkles layer */
   .petal-layer{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:1}
@@ -46,7 +46,7 @@
   }
   .spark{position:absolute;border-radius:50%;background:radial-gradient(circle,#f4e3b8 0%,rgba(244,227,184,0) 70%);opacity:0;animation:twinkle ease-in-out infinite}
   @keyframes twinkle{0%,100%{opacity:0;transform:scale(.5)}50%{opacity:.9;transform:scale(1)}}
-
+ 
   /* shimmer sweep across the names */
   .shimmer{
     background:linear-gradient(100deg,var(--rose-deep) 0%,var(--rose-deep) 38%,#e9c98f 50%,var(--rose-deep) 62%,var(--rose-deep) 100%);
@@ -58,7 +58,7 @@
     padding-bottom:.14em;line-height:1.3;
   }
   @keyframes sweep{0%{background-position:180% 0}55%,100%{background-position:-80% 0}}
-
+ 
   /* self-drawing gold ornament line */
   .ornament .line{transform:scaleX(0);transform-origin:right center}
   .ornament .line.r{transform-origin:left center}
@@ -66,18 +66,18 @@
   .ornament.draw .mark{animation:spinIn .9s cubic-bezier(.2,.8,.3,1.3) forwards}
   @keyframes growLine{to{transform:scaleX(1)}}
   @keyframes spinIn{from{opacity:0;transform:rotate(-140deg) scale(.2)}to{opacity:1;transform:rotate(0) scale(1)}}
-
+ 
   /* gentle breathing float */
   @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
   @keyframes floatyBR{0%,100%{transform:rotate(180deg) translateY(0)}50%{transform:rotate(180deg) translateY(-7px)}}
   @keyframes floatyBadge{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-6px) rotate(-1.5deg)}}
-
+ 
   /* heading reveal on scroll */
   .reveal{transition:opacity .9s ease,transform .9s ease}
   body.js-anim .reveal{opacity:1;transform:none}
   body.js-anim .reveal.in{opacity:1;transform:none}
   .reveal.in{opacity:1;transform:none}
-
+ 
   /* ---- catchy event function animations ---- */
   /* rippling halo rings around each badge */
   .event-badge{position:relative}
@@ -109,7 +109,7 @@
     animation:sweep 4.5s ease-in-out 1.2s infinite;
   }
   /* richer entrance handled on the main .event rule below */
-
+ 
   /* ============ SHARED DECOR ============ */
   .bism{
     font-family:'Amiri',serif;
@@ -135,7 +135,7 @@
   .ornament .line{height:1px;width:clamp(40px,10vw,90px);background:linear-gradient(90deg,transparent,var(--gold))}
   .ornament .line.r{background:linear-gradient(90deg,var(--gold),transparent)}
   .ornament .mark{font-size:16px}
-
+ 
   /* ============ HERO / ANIMATED INVITATION ============ */
   .hero{
     min-height:100vh;
@@ -159,7 +159,7 @@
     pointer-events:none;opacity:0;animation:frameIn 1.4s ease 5.8s forwards;
   }
   @keyframes frameIn{from{opacity:0;transform:scale(1.015)}to{opacity:1;transform:scale(1)}}
-
+ 
   .floral{position:absolute;width:46%;max-width:230px;pointer-events:none;z-index:2}
   .floral.tl{top:-2%;left:-2%;animation:floaty 6s ease-in-out infinite 6s}
   .floral.br{bottom:-2%;right:-2%;transform:rotate(180deg);animation:floatyBR 6.5s ease-in-out infinite 6.3s}
@@ -170,35 +170,35 @@
   @keyframes draw{to{stroke-dashoffset:0}}
   @keyframes leafPop{from{opacity:0;transform:scale(.2)}to{opacity:1;transform:scale(1)}}
   @keyframes bloom{0%{opacity:0;transform:scale(.1) rotate(-12deg)}60%{opacity:1}100%{opacity:1;transform:scale(1) rotate(0)}}
-
+ 
   .content{position:relative;z-index:3;width:100%;display:flex;flex-direction:column;align-items:center}
   .rise{opacity:0;transform:translateY(14px);animation:rise 1s ease forwards}
   @keyframes rise{to{opacity:1;transform:translateY(0)}}
-
+ 
   .hero-bism{font-family:'Amiri',serif;font-size:clamp(16px,3.4vw,22px);color:var(--gold-deep);direction:rtl;animation-delay:2.9s}
   .eyebrow{font-family:'Marcellus',serif;letter-spacing:.4em;font-size:clamp(9px,1.7vw,12px);color:var(--rose-deep);text-transform:uppercase;padding-left:.4em;margin-top:1.1em;animation-delay:3.15s}
   .together{font-style:italic;font-size:clamp(13px,2.4vw,17px);color:var(--ink-soft);margin-top:1em;max-width:26ch;animation-delay:3.35s}
-
+ 
   .names{font-family:'Parisienne',cursive;color:var(--rose-deep);line-height:1.28;font-size:clamp(42px,9.5vw,70px);margin:.05em 0;padding-bottom:.12em;overflow:visible}
   .name-1{animation-delay:3.6s}
   .amp{font-style:italic;font-weight:500;color:var(--gold-deep);font-size:clamp(22px,5vw,38px);margin:.02em 0;animation-delay:3.9s}
   .name-2{animation-delay:4.2s}
-
+ 
   .divider{display:flex;align-items:center;gap:12px;margin:1.1em 0 1em;color:var(--gold);animation-delay:4.55s}
   .divider .line{height:1px;width:clamp(34px,9vw,64px);background:linear-gradient(90deg,transparent,var(--gold))}
   .divider .line.r{background:linear-gradient(90deg,var(--gold),transparent)}
   .divider .dot{font-size:14px;line-height:1}
-
+ 
   .invite-line{font-style:italic;font-size:clamp(13px,2.3vw,16px);color:var(--ink-soft);max-width:30ch;animation-delay:4.75s}
   .scroll-hint{margin-top:1.8em;font-family:'Marcellus',serif;font-size:clamp(9px,1.6vw,11px);letter-spacing:.28em;text-transform:uppercase;color:var(--gold-deep);animation-delay:5.4s}
   .scroll-hint .chev{display:block;margin:8px auto 0;width:16px;height:16px;animation:bob 1.8s ease-in-out infinite 6s}
   @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
-
+ 
   /* ============ EVENTS ============ */
   section{padding:clamp(56px,10vw,110px) 24px}
   .wrap{max-width:1040px;margin:0 auto}
   .intro-text{text-align:center;font-size:clamp(17px,2.6vw,21px);color:var(--ink-soft);max-width:60ch;margin:0 auto;font-style:italic}
-
+ 
   .events{background:linear-gradient(180deg,var(--bg),#efe6da)}
   .event-grid{display:flex;flex-direction:column;gap:clamp(28px,4vw,44px);margin-top:10px}
   .event{
@@ -255,7 +255,7 @@
   }
   .dir-btn:hover{background:var(--sage);transform:translateY(-1px)}
   .dir-btn svg{width:15px;height:15px}
-
+ 
   /* ============ FAMILY ============ */
   .family{background:linear-gradient(180deg,#efe6da,var(--bg))}
   .fam-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(20px,3vw,32px);margin-top:14px}
@@ -275,7 +275,7 @@
   .fam-card.parents{flex:1 1 100%;max-width:none;background:radial-gradient(120% 120% at 50% 0%, #fff, var(--paper-warm));border-color:rgba(191,161,92,.5)}
   .fam-card.parents .fam-names{font-size:clamp(30px,5vw,42px)}
   .fam-flourish{color:var(--gold);font-size:15px;margin-bottom:10px}
-
+ 
   /* ---- family card animations ---- */
   .fam-card{position:relative;overflow:hidden;will-change:transform,box-shadow}
   /* gentle continuous glow-breathing on the border/shadow */
@@ -308,7 +308,7 @@
   /* floating flourish on parents card */
   .fam-flourish{display:inline-block;animation:flourishFloat 3.5s ease-in-out infinite}
   @keyframes flourishFloat{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-4px) rotate(8deg)}}
-
+ 
   /* ============ CLOSING ============ */
   .closing{background:radial-gradient(120% 90% at 50% 100%, #efe4d8, var(--bg));text-align:center}
   .closing .dua{font-family:'Amiri',serif;font-size:clamp(20px,4vw,30px);color:var(--gold-deep);direction:rtl;margin-bottom:18px}
@@ -316,7 +316,7 @@
   .closing .couple{font-family:'Parisienne',cursive;font-size:clamp(40px,8vw,66px);color:var(--rose-deep);line-height:1.3;padding-bottom:.1em;margin-bottom:8px}
   .closing .rsvp{font-family:'Marcellus',serif;font-size:clamp(11px,1.9vw,13px);letter-spacing:.16em;color:var(--ink);margin-top:26px}
   .closing .rsvp span{color:var(--gold-deep)}
-
+ 
   /* RSVP contact card */
   .rsvp-card{
     display:inline-flex;flex-direction:column;align-items:center;
@@ -329,7 +329,7 @@
   .rsvp-role{font-family:'Marcellus',serif;font-size:clamp(9px,1.5vw,11px);letter-spacing:.24em;text-transform:uppercase;color:var(--gold-deep);margin-bottom:6px}
   .rsvp-name{font-family:'Parisienne',cursive;font-size:clamp(30px,5vw,40px);color:var(--rose-deep);line-height:1.25;padding-bottom:.08em;margin-bottom:10px}
   .rsvp-hint{font-style:italic;font-size:clamp(13px,2.2vw,15px);color:var(--ink-soft);margin-bottom:18px;max-width:34ch}
-
+ 
   /* highlighted confirm-presence banner */
   .confirm-banner{
     display:inline-flex;align-items:center;justify-content:center;
@@ -350,7 +350,7 @@
     animation:bannerShine 4.5s ease-in-out 1s infinite;
   }
   @keyframes bannerShine{0%{left:-60%}45%,100%{left:120%}}
-
+ 
   .rsvp-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
   .rsvp-btn{
     display:inline-flex;align-items:center;gap:8px;
@@ -362,9 +362,9 @@
   .rsvp-btn.call{background:var(--rose-deep);color:#fff}
   .rsvp-btn.wa{background:#2f9d6e;color:#fff}
   .rsvp-btn svg{width:16px;height:16px}
-
+ 
   footer{text-align:center;padding:30px 24px 40px;font-style:italic;color:var(--ink-soft);font-size:clamp(17px,3vw,21px);line-height:1.6;background:var(--bg)}
-
+ 
   /* ============ BOTTOM NAV (floating dock) ============ */
   .bottom-nav{
     position:fixed;left:50%;transform:translateX(-50%);
@@ -439,10 +439,10 @@
   }
   .nav-item.active svg{stroke:#fff}
   .nav-item.active .lbl{max-height:16px;opacity:1;margin-top:1px}
-
+ 
   /* keep content clear of the floating bar */
   footer{padding-bottom:calc(40px + 92px + env(safe-area-inset-bottom))}
-
+ 
   @media (max-width:560px){
     .event-meta .row{justify-content:center}
     .event{padding:28px 20px;gap:10px}
@@ -476,13 +476,13 @@
 </style>
 </head>
 <body>
-
+ 
 <!-- ============ HERO ============ -->
 <div class="hero" id="home">
   <div class="card" id="card">
-
+ 
     <div class="petal-layer" id="petalLayer" aria-hidden="true"></div>
-
+ 
     <svg class="floral tl" viewBox="0 0 240 240" fill="none" aria-hidden="true">
       <path class="stem" style="--len:180" d="M8 8 C60 30 96 60 118 108"/>
       <path class="stem" style="--len:150;animation-delay:.35s" d="M8 8 C44 58 60 96 66 150"/>
@@ -512,7 +512,7 @@
         <circle class="core" style="animation-delay:2.45s" cx="0" cy="0" r="5"/>
       </g>
     </svg>
-
+ 
     <svg class="floral br" viewBox="0 0 240 240" fill="none" aria-hidden="true">
       <path class="stem" style="--len:180;animation-delay:.2s" d="M8 8 C60 30 96 60 118 108"/>
       <path class="stem" style="--len:150;animation-delay:.5s" d="M8 8 C44 58 60 96 66 150"/>
@@ -542,47 +542,47 @@
         <circle class="core" style="animation-delay:2.55s" cx="0" cy="0" r="5"/>
       </g>
     </svg>
-
+ 
     <div class="content">
       <div class="hero-bism rise">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْم</div>
       <div class="eyebrow rise">Together with our families</div>
-      <div class="together rise">Syed Zahid Ali &amp; Shama Ali<br>request the honour of your presence at the wedding of their son</div>
-
+      <div class="together rise">Syed Zahid Ali & Shama Ali<br>request the honour of your presence at the wedding of their son</div>
+ 
       <div class="names name-1 rise shimmer">Syed Tanveer Ali</div>
       <div class="amp rise">with</div>
       <div class="names name-2 rise shimmer">Fiza Saiyed</div>
-
-      <div class="divider rise"><span class="line"></span><span class="dot">&#10047;</span><span class="line r"></span></div>
-
-      <div class="invite-line rise">as two families come together in love &amp; blessing</div>
-
+ 
+      <div class="divider rise"><span class="line"></span><span class="dot">✿</span><span class="line r"></span></div>
+ 
+      <div class="invite-line rise">as two families come together in love & blessing</div>
+ 
       <div class="scroll-hint rise">Scroll for details
         <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
       </div>
     </div>
   </div>
 </div>
-
+ 
 <!-- ============ INTRO ============ -->
 <section class="wrap">
   <p class="bism reveal">وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا</p>
-  <div class="ornament draw-on-view reveal"><span class="line"></span><span class="mark">&#10047;</span><span class="line r"></span></div>
+  <div class="ornament draw-on-view reveal"><span class="line"></span><span class="mark">✿</span><span class="line r"></span></div>
   <p class="intro-text reveal">With hearts full of gratitude to Allah, we joyfully invite you to share in our happiness as we begin this new journey. Your presence and prayers would mean the world to us.</p>
 </section>
-
+ 
 <!-- ============ EVENTS ============ -->
 <section class="events" id="events">
   <div class="wrap">
     <div class="section-eyebrow reveal">The Celebrations</div>
-    <div class="ornament draw-on-view reveal"><span class="line"></span><span class="mark">&#10047;</span><span class="line r"></span></div>
-
+    <div class="ornament draw-on-view reveal"><span class="line"></span><span class="mark">✿</span><span class="line r"></span></div>
+ 
     <div class="event-grid">
-
+ 
       <div class="event">
         <div class="event-badge"><span class="num">I</span><span class="lbl">First</span></div>
         <div class="event-body">
           <h3>Haldi</h3>
-          <div class="arabic">A morning of colour &amp; joy</div>
+          <div class="arabic">A morning of colour & joy</div>
           <div class="event-meta">
             <div class="row"><span class="k">When</span><span>Monday, 26 October 2026</span></div>
             <div class="row"><span class="k">Time</span><span>3:30 PM onwards</span></div>
@@ -594,12 +594,12 @@
           </a>
         </div>
       </div>
-
+ 
       <div class="event">
         <div class="event-badge"><span class="num">II</span><span class="lbl">Second</span></div>
         <div class="event-body">
           <h3>Nikah</h3>
-          <div class="arabic">نِكَاح &nbsp;·&nbsp; The blessed union</div>
+          <div class="arabic">نِكَاح  ·  The blessed union</div>
           <div class="event-meta">
             <div class="row"><span class="k">When</span><span>Tuesday, 27 October 2026</span></div>
             <div class="row"><span class="k">Time</span><span>After Asr prayer</span></div>
@@ -611,12 +611,12 @@
           </a>
         </div>
       </div>
-
+ 
       <div class="event">
         <div class="event-badge"><span class="num">III</span><span class="lbl">Third</span></div>
         <div class="event-body">
           <h3>Waleema</h3>
-          <div class="arabic">وَلِيْمَة &nbsp;·&nbsp; The wedding feast</div>
+          <div class="arabic">وَلِيْمَة  ·  The wedding feast</div>
           <div class="event-meta">
             <div class="row"><span class="k">When</span><span>Wednesday, 28 October 2026</span></div>
             <div class="row"><span class="k">Time</span><span>7:00 PM onwards</span></div>
@@ -628,47 +628,47 @@
           </a>
         </div>
       </div>
-
+ 
     </div>
   </div>
 </section>
-
+ 
 <!-- ============ FAMILY ============ -->
 <section class="family" id="family">
   <div class="wrap">
-    <div class="section-eyebrow reveal">With Love &amp; Blessings From</div>
-    <div class="ornament draw-on-view reveal"><span class="line"></span><span class="mark">&#10047;</span><span class="line r"></span></div>
-
+    <div class="section-eyebrow reveal">With Love & Blessings From</div>
+    <div class="ornament draw-on-view reveal"><span class="line"></span><span class="mark">✿</span><span class="line r"></span></div>
+ 
     <div class="fam-grid">
       <div class="fam-card parents">
-        <div class="fam-flourish">&#10047;</div>
+        <div class="fam-flourish">✿</div>
         <div class="fam-role">Parents of the Groom</div>
-        <div class="fam-names">Syed Zahid Ali &amp; Shama Ali</div>
+        <div class="fam-names">Syed Zahid Ali & Shama Ali</div>
         <div class="fam-sub">who invite you with open hearts</div>
       </div>
-
+ 
       <div class="fam-card">
-        <div class="fam-role">Brother &amp; Bhabhi</div>
-        <div class="fam-names">Syed Taha Ali<br>&amp; Shabnam Ali</div>
-        <div class="fam-sub">with little Aydin &amp; Sara</div>
+        <div class="fam-role">Brother & Bhabhi</div>
+        <div class="fam-names">Syed Taha Ali<br>& Shabnam Ali</div>
+        <div class="fam-sub">with little Aydin & Sara</div>
       </div>
-
+ 
       <div class="fam-card">
-        <div class="fam-role">Brother-in-law &amp; Sister</div>
-        <div class="fam-names">Shaif Tazir<br>&amp; Sumaiya Tazir</div>
+        <div class="fam-role">Brother-in-law & Sister</div>
+        <div class="fam-names">Shaif Tazir<br>& Sumaiya Tazir</div>
         <div class="fam-sub">sharing in every blessing</div>
       </div>
     </div>
   </div>
 </section>
-
+ 
 <!-- ============ CLOSING ============ -->
 <section class="closing" id="rsvp">
   <div class="wrap">
     <p class="dua reveal">رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ</p>
     <p class="dua-t reveal">"Our Lord, grant us from among our spouses and offspring comfort to our eyes."</p>
     <div class="confirm-banner reveal"><span>Kindly confirm your presence via RSVP</span></div>
-    <div class="couple reveal">Tanveer &amp; Fiza</div>
+    <div class="couple reveal">Tanveer & Fiza</div>
     <div class="rsvp-card reveal">
       <div class="rsvp-role">Kindly RSVP</div>
       <div class="rsvp-name">Syed Taha Ali</div>
@@ -686,33 +686,33 @@
     </div>
   </div>
 </section>
-
-<footer>Made with love &#10047; The Syed Family looks forward to celebrating with you</footer>
-
+ 
+<footer>Made with love ✿ The Syed Family looks forward to celebrating with you</footer>
+ 
 <nav class="bottom-nav" aria-label="Section navigation">
-  <button type="button" class="nav-item" data-target="home" aria-label="Home">
+  <a href="#home" class="nav-item" data-target="home" aria-label="Home">
     <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-9"/></svg></span>
     <span class="lbl">Home</span>
-  </button>
-  <button type="button" class="nav-item" data-target="events" aria-label="Events">
+  </a>
+  <a href="#events" class="nav-item" data-target="events" aria-label="Events">
     <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg></span>
     <span class="lbl">Events</span>
-  </button>
-  <button type="button" class="nav-item" data-target="family" aria-label="Family">
+  </a>
+  <a href="#family" class="nav-item" data-target="family" aria-label="Family">
     <span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3.5 20c0-3 2.5-5 5.5-5s5.5 2 5.5 5"/><path d="M15 15c2.6 0 5 1.7 5 4.4"/></svg></span>
     <span class="lbl">Family</span>
-  </button>
-  <button type="button" class="nav-item" data-target="rsvp" aria-label="RSVP">
+  </a>
+  <a href="#rsvp" class="nav-item" data-target="rsvp" aria-label="RSVP">
     <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"/><path d="m4 7 8 6 8-6"/></svg></span>
     <span class="lbl">RSVP</span>
-  </button>
+  </a>
 </nav>
-
+ 
 <script>
   /* enable scroll-reveal animations only when JS is available.
      if this line never runs, all content stays visible by default. */
   document.body.classList.add('js-anim');
-
+ 
   /* ---- falling petals + sparkles in hero ---- */
   (function(){
     var layer = document.getElementById('petalLayer');
@@ -746,7 +746,7 @@
       laye******ndChild(s);
     }
   })();
-
+ 
   /* ---- unified scroll reveals ---- */
   /* inject floral corner sprays into each event card */
   (function(){
@@ -777,7 +777,7 @@
       +   '<ellipse class="c-petal" style="fill:var(--rose);animation-delay:2.1s" cx="0" cy="0" rx="11" ry="15"/>'
       +   '<circle class="c-core" style="animation-delay:2.25s" cx="0" cy="0" r="4.5"/>'
       + '</g>';
-
+ 
     document.querySelectorAll('.event').forEach(function(ev){
       ['tl','br'].forEach(function(pos){
         var svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
@@ -790,7 +790,7 @@
       });
     });
   })();
-
+ 
   /* ---- gentle rose petals inside each event card ---- */
   (function(){
     if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -817,16 +817,16 @@
       ev.insertBefore(layer, ev.firstChild);
     });
   })();
-
+ 
   var revealTargets = document.querySelectorAll('.event, .fam-card, .reveal');
-
+ 
   function revealAll(){
     revealTargets.forEach(function(el){
       el.classList.add('in');
       if(el.classList.contains('draw-on-view')) el.classList.add('draw');
     });
   }
-
+ 
   if('IntersectionObserver' in window){
     var io = new IntersectionObserver(function(entries){
       entries.forEach(function(e){
@@ -837,7 +837,7 @@
         }
       });
     },{threshold:0.15});
-
+ 
     /* stagger grouped children */
     document.querySelectorAll('.event-grid').forEach(function(grid){
       grid.querySelectorAll('.event').forEach(function(el,i){ el.style.transitionDelay=(i*0.12)+'s'; });
@@ -845,9 +845,9 @@
     document.querySelectorAll('.fam-grid').forEach(function(grid){
       grid.querySelectorAll('.fam-card').forEach(function(el,i){ el.style.transitionDelay=(i*0.12)+'s'; });
     });
-
+ 
     revealTargets.forEach(function(el){ io.observe(el); });
-
+ 
     /* safety net: if anything hasn't revealed within 3.5s, force it visible */
     setTimeout(function(){
       revealTargets.forEach(function(el){
@@ -862,80 +862,54 @@
     /* no IntersectionObserver support → just show everything */
     revealAll();
   }
-
+ 
   /* ---- bottom nav active highlighting ---- */
   (function(){
     var sections = ['home','events','family','rsvp'].map(function(id){ return document.getElementById(id); }).filter(Boolean);
     var navItems = {};
     document.querySelectorAll('.nav-item').forEach(function(a){ navItems[a.getAttribute('data-target')] = a; });
-
+ 
     function setActive(id){
       Object.keys(navItems).forEach(function(k){ navItems[k].classList.toggle('active', k===id); });
     }
-
+ 
     var navIO = new IntersectionObserver(function(entries){
       entries.forEach(function(e){
         if(e.isIntersecting) setActive(e.target.id);
       });
     },{rootMargin:'-45% 0px -45% 0px', threshold:0});
     sections.forEach(function(s){ navIO.observe(s); });
-
+ 
     /* click/tap handling — robust across iOS Safari, Android, desktop.
        JS fully controls scroll; buttons have no href to intercept. */
-    function goTo(id){
+    /* Native anchor links (href="#id") do the scrolling on real browsers.
+       We also run a JS fallback: if the page hasn't moved shortly after the
+       tap, force the scroll manually. This covers devices where native
+       anchor scrolling is blocked, without breaking the ones where it works. */
+    function currentY(){
+      return window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    }
+    function forceScroll(id){
       var target = document.getElementById(id);
       if(!target) return;
-      setActive(id);
-
-      var startY = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-      var rectTop = target.getBoundingClientRect().top;
-      var destY = startY + rectTop;
-
-      /* clamp so we never try to scroll past the bottom */
-      var maxY = Math.max(0, (document.body.scrollHeight || document.documentElement.scrollHeight) - window.innerHeight);
+      var destY = currentY() + target.getBoundingClientRect().top;
+      var maxY = Math.max(0, (document.documentElement.scrollHeight || document.body.scrollHeight) - window.innerHeight);
       if(destY > maxY) destY = maxY;
       if(destY < 0) destY = 0;
-
-      var distance = destY - startY;
-      if(Math.abs(distance) < 2) return;
-
-      var duration = 550;
-      var startT = null;
-
-      function ease(t){ return t<0.5 ? 2*t*t : -1+(4-2*t)*t; } /* easeInOutQuad */
-
-      function step(ts){
-        if(startT === null) startT = ts;
-        var elapsed = ts - startT;
-        var progress = Math.min(elapsed / duration, 1);
-        var y = startY + distance * ease(progress);
-        window.scrollTo(0, y);
-        if(progress < 1){
-          requestAnimationFrame(step);
-        }
-      }
-
-      if('requestAnimationFrame' in window){
-        requestAnimationFrame(step);
-      } else {
-        window.scrollTo(0, destY);
-      }
+      try{ window.scrollTo(0, destY); }catch(e){ document.documentElement.scrollTop = destY; document.body.scrollTop = destY; }
     }
-
     document.querySelectorAll('.nav-item').forEach(function(a){
       var id = a.getAttribute('data-target');
-      var lastFire = 0;
-      function handle(ev){
-        ev.preventDefault();
-        ev.stopPropagation();
-        /* guard against touchend + click both firing within 500ms */
-        var now = Date.now();
-        if(now - lastFire < 500) return;
-        lastFire = now;
-        goTo(id);
-      }
-      a.addEventListener('click', handle, false);
-      a.addEventListener('touchend', handle, false);
+      a.addEventListener('click', function(){
+        setActive(id);
+        var before = currentY();
+        /* if native anchor scroll didn't move us, do it ourselves */
+        setTimeout(function(){
+          if(Math.abs(currentY() - before) < 4){
+            forceScroll(id);
+          }
+        }, 120);
+      });
     });
   })();
 </script>
