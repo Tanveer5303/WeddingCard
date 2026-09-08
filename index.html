@@ -73,7 +73,9 @@
   @keyframes floatyBadge{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-6px) rotate(-1.5deg)}}
 
   /* heading reveal on scroll */
-  .reveal{opacity:0;transform:translateY(22px);transition:opacity .9s ease,transform .9s ease}
+  .reveal{transition:opacity .9s ease,transform .9s ease}
+  body.js-anim .reveal{opacity:1;transform:none}
+  body.js-anim .reveal.in{opacity:1;transform:none}
   .reveal.in{opacity:1;transform:none}
 
   /* ---- catchy event function animations ---- */
@@ -205,8 +207,10 @@
     border:1px solid rgba(191,161,92,.28);
     padding:clamp(40px,7vw,60px) clamp(28px,5vw,52px);
     display:flex;flex-direction:column;align-items:center;text-align:center;gap:clamp(14px,3vw,20px);
-    opacity:0;transform:translateY(40px) scale(.96);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.75,.3,1.05);
+    transition:opacity .9s ease,transform .9s cubic-bezier(.2,.75,.3,1.05);
   }
+  body.js-anim .event{opacity:1;transform:none}
+  body.js-anim .event.in{opacity:1;transform:none}
   /* floral corner sprays on each event card */
   .card-floral{position:absolute;width:clamp(96px,26%,150px);pointer-events:none;z-index:0}
   /* per-card falling rose petals */
@@ -259,8 +263,10 @@
     background:var(--paper);border-radius:8px;border:1px solid rgba(191,161,92,.28);
     box-shadow:0 16px 44px -30px rgba(70,60,60,.4);
     padding:clamp(26px,4vw,38px);text-align:center;
-    opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .8s ease;
+    transition:opacity .8s ease,transform .8s ease;
   }
+  body.js-anim .fam-card{opacity:1;transform:none}
+  body.js-anim .fam-card.in{opacity:1;transform:none}
   .fam-card.in{opacity:1;transform:none}
   .fam-role{font-family:'Marcellus',serif;font-size:clamp(9px,1.5vw,11px);letter-spacing:.24em;text-transform:uppercase;color:var(--gold-deep);margin-bottom:12px}
   .fam-names{font-family:'Parisienne',cursive;font-size:clamp(26px,4vw,34px);color:var(--rose-deep);line-height:1.15}
@@ -701,6 +707,10 @@
 </nav>
 
 <script>
+  /* enable scroll-reveal animations only when JS is available.
+     if this line never runs, all content stays visible by default. */
+  document.body.classList.add('js-anim');
+
   /* ---- falling petals + sparkles in hero ---- */
   (function(){
     var layer = document.getElementById('petalLayer');
@@ -806,25 +816,50 @@
     });
   })();
 
-  var io = new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
-      if(e.isIntersecting){
-        e.target.classList.add('in');
-        if(e.target.classList.contains('draw-on-view')) e.target.classList.add('draw');
-        io.unobserve(e.target);
-      }
+  var revealTargets = document.querySelectorAll('.event, .fam-card, .reveal');
+
+  function revealAll(){
+    revealTargets.forEach(function(el){
+      el.classList.add('in');
+      if(el.classList.contains('draw-on-view')) el.classList.add('draw');
     });
-  },{threshold:0.15});
+  }
 
-  /* stagger grouped children */
-  document.querySelectorAll('.event-grid').forEach(function(grid){
-    grid.querySelectorAll('.event').forEach(function(el,i){ el.style.transitionDelay=(i*0.12)+'s'; });
-  });
-  document.querySelectorAll('.fam-grid').forEach(function(grid){
-    grid.querySelectorAll('.fam-card').forEach(function(el,i){ el.style.transitionDelay=(i*0.12)+'s'; });
-  });
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          e.target.classList.add('in');
+          if(e.target.classList.contains('draw-on-view')) e.target.classList.add('draw');
+          io.unobserve(e.target);
+        }
+      });
+    },{threshold:0.15});
 
-  document.querySelectorAll('.event, .fam-card, .reveal').forEach(function(el){ io.observe(el); });
+    /* stagger grouped children */
+    document.querySelectorAll('.event-grid').forEach(function(grid){
+      grid.querySelectorAll('.event').forEach(function(el,i){ el.style.transitionDelay=(i*0.12)+'s'; });
+    });
+    document.querySelectorAll('.fam-grid').forEach(function(grid){
+      grid.querySelectorAll('.fam-card').forEach(function(el,i){ el.style.transitionDelay=(i*0.12)+'s'; });
+    });
+
+    revealTargets.forEach(function(el){ io.observe(el); });
+
+    /* safety net: if anything hasn't revealed within 3.5s, force it visible */
+    setTimeout(function(){
+      revealTargets.forEach(function(el){
+        var r = el.getBoundingClientRect();
+        if(r.top < window.innerHeight && !el.classList.contains('in')){
+          el.classList.add('in');
+          if(el.classList.contains('draw-on-view')) el.classList.add('draw');
+        }
+      });
+    }, 3500);
+  } else {
+    /* no IntersectionObserver support → just show everything */
+    revealAll();
+  }
 
   /* ---- bottom nav active highlighting ---- */
   (function(){
