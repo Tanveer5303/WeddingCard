@@ -913,34 +913,35 @@
        so the button always does something.
      • Do NOT use copyrighted Bollywood songs without a licence.
      ───────────────────────────────────────────────────────────── */
-  /* Cache-busting: a unique value is appended on EVERY page load, so no browser
-     (especially iOS Safari, which caches audio very aggressively) can reuse an
-     old cached music file. Just replace music.mp3 and redeploy — nothing else. */
+  /* Cache-busting: unique value each page load so no browser (esp. iOS Safari)
+     serves a stale music file. Replace music.mp3 and redeploy — nothing else. */
   var MUSIC_BUST = Date.now().toString(36) + Math.random().toString(36).slice(2,7);
   var TRACK_CANDIDATES = ['music.mp3', 'music.ogg', 'assets/music.mp3'].map(function(u){
     return u + '?cb=' + MUSIC_BUST;
   });
 
-  var customAudio = null, customReady = false;
+  var customAudio = null;      // the <audio> element (created lazily)
+  var customExists = null;     // null=unknown, true=a file plays, false=none
   var musicBtn = document.getElementById('musicBtn');
   var musicOn = false;
   var audioCtx = null, masterGain = null, melodyTimer = null;
 
   function reflectMusic(){ musicBtn.classList.toggle('playing', musicOn); }
 
-  /* probe candidate files; if one exists, prepare it */
-  (function probeTracks(){
-    var i=0;
-    function tryNext(){
-      if(i>=TRACK_CANDIDATES.length) return; // none found -> generated fallback
-      var a=new Audio();
-      a.preload='auto'; a.loop=true;
-      a.addEventListener('canplaythrough', function(){ customAudio=a; customReady=true; }, {once:true});
-      a.addEventListener('error', function(){ i++; tryNext(); }, {once:true});
-      a.src=TRACK_CANDIDATES[i];
-    }
-    tryNext();
-  })();
+  /* Build an <audio> element (iOS-friendly: no preload, we play on user gesture).
+     We DON'T wait for canplaythrough — iOS often won't fire it until play() is
+     called from a tap, which was the bug that made iPhones fall back to the tone. */
+  function buildAudio(){
+    if(customAudio) return customAudio;
+    var a = new Audio();
+    a.loop = true;
+    a.preload = 'none';           // iOS ignores/limits preload anyway
+    a.setAttribute('playsinline',''); a.setAttribute('webkit-playsinline','');
+    a.crossOrigin = 'anonymous';
+    a.src = TRACK_CANDIDATES[0];   // primary: music.mp3?cb=...
+    customAudio = a;
+    return a;
+  }
 
   function initAudio(){
     if(audioCtx) return;
@@ -1023,15 +1024,25 @@
   }
 
   function startMusic(){
-    if(customReady && customAudio){
-      customAudio.volume=0;
-      customAudio.play().then(function(){
-        musicOn=true; reflectMusic();
-        var v=0; var fade=setInterval(function(){ v=Math.min(0.65,v+0.05); customAudio.volume=v; if(v>=0.65)clearInterval(fade); },80);
-      }).catch(function(){ /* fall back to generated */ startGenerated(); });
-      return;
+    /* Try the real audio file FIRST, directly on the user's tap (this is when
+       iOS allows playback). Only fall back to the generated tone if it truly
+       fails to play. */
+    var a = buildAudio();
+    a.volume = 0;
+    var p = a.play();
+    if(p && p.then){
+      p.then(function(){
+        customExists = true;
+        musicOn = true; reflectMusic();
+        var v=0; var fade=setInterval(function(){ v=Math.min(0.65,v+0.05); a.volume=v; if(v>=0.65)clearInterval(fade); },80);
+      }).catch(function(){
+        /* file missing or blocked -> gentle built-in instrumental */
+        customExists = false; startGenerated();
+      });
+    } else {
+      /* very old browser: assume it plays */
+      customExists = true; musicOn = true; a.volume = 0.6; reflectMusic();
     }
-    startGenerated();
   }
   function startGenerated(){
     initAudio();
