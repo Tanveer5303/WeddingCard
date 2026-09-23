@@ -668,9 +668,9 @@
 
 <!-- ============ INTRO ============ -->
 <section class="wrap">
-  <p class="bism reveal">وَمِنْ كُلِّ شَيْءٍ خَلَقْنَا زَوْجَيْنِ لَعَلَّكُمْ تَذَكَّرُونَ</p>
+  <p class="bism reveal">وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا</p>
   <div class="ornament draw-on-view reveal"><span class="line"></span><span class="mark">&#10047;</span><span class="line r"></span></div>
-  <p class="intro-text reveal">"And We created pairs of all things, so perhaps you would be mindful." — Surah Adh-Dhāriyāt 51:49<br><br>With hearts full of gratitude, we joyfully invite you to share in our happiness as two souls begin a new journey together.</p>
+  <p class="intro-text reveal">With hearts full of gratitude to Allah, we joyfully invite you to share in our happiness as we begin this new journey. Your presence and prayers would mean the world to us.</p>
 </section>
 
 <!-- ============ EVENTS ============ -->
@@ -792,8 +792,8 @@
 <!-- ============ CLOSING ============ -->
 <section class="closing" id="rsvp">
   <div class="wrap">
-    <p class="dua reveal">اللّٰهُمَّ بَارِكْ لَهُمَا وَبَارِكْ عَلَيْهِمَا وَاجْمَعْ بَيْنَهُمَا فِيْ خَيْر</p>
-    <p class="dua-t reveal">"O Allah, bless them both, and send Your blessings upon them, and unite them in goodness."</p>
+    <p class="dua reveal">رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ</p>
+    <p class="dua-t reveal">"Our Lord, grant us from among our spouses and offspring comfort to our eyes."</p>
     <div class="confirm-banner reveal"><span>Kindly confirm your presence via RSVP</span></div>
     <div class="couple reveal">Tanveer &amp; Fiza</div>
     <div class="rsvp-card reveal">
@@ -835,7 +835,7 @@
   </div>
 </section>
 
-<footer>With joy in our hearts, we await the pleasure of your company &#10047;</footer>
+<footer>We look forward to celebrating this joyous occasion with you &#10047;</footer>
 
 <nav class="bottom-nav" aria-label="Section navigation">
   <a href="#home" class="nav-item" data-target="home" aria-label="Home">
@@ -913,12 +913,12 @@
        so the button always does something.
      • Do NOT use copyrighted Bollywood songs without a licence.
      ───────────────────────────────────────────────────────────── */
-  /* Change MUSIC_VERSION to a NEW value every time you replace music.mp3.
-     iPhones cache audio aggressively — a fresh version string forces them to
-     fetch the new file. (e.g. 'v3', 'oct2026', etc.) */
-  var MUSIC_VERSION = 'v3-oct';
+  /* Cache-busting: a unique value is appended on EVERY page load, so no browser
+     (especially iOS Safari, which caches audio very aggressively) can reuse an
+     old cached music file. Just replace music.mp3 and redeploy — nothing else. */
+  var MUSIC_BUST = Date.now().toString(36) + Math.random().toString(36).slice(2,7);
   var TRACK_CANDIDATES = ['music.mp3', 'music.ogg', 'assets/music.mp3'].map(function(u){
-    return u + '?ver=' + MUSIC_VERSION;
+    return u + '?cb=' + MUSIC_BUST;
   });
 
   var customAudio = null, customReady = false;
