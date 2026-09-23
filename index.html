@@ -913,7 +913,13 @@
        so the button always does something.
      • Do NOT use copyrighted Bollywood songs without a licence.
      ───────────────────────────────────────────────────────────── */
-  var TRACK_CANDIDATES = ['music.mp3', 'music.ogg', 'assets/music.mp3'];
+  /* Cache-busting: a unique value is appended on EVERY page load, so no browser
+     (especially iOS Safari, which caches audio very aggressively) can reuse an
+     old cached music file. Just replace music.mp3 and redeploy — nothing else. */
+  var MUSIC_BUST = Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+  var TRACK_CANDIDATES = ['music.mp3', 'music.ogg', 'assets/music.mp3'].map(function(u){
+    return u + '?cb=' + MUSIC_BUST;
+  });
 
   var customAudio = null, customReady = false;
   var musicBtn = document.getElementById('musicBtn');
