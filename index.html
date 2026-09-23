@@ -1073,6 +1073,37 @@
   });
   reflectMusic();
 
+  /* ---- pause music when the user leaves (switches apps, locks screen, hides tab) ---- */
+  (function(){
+    var wasPlaying = false;
+    function pauseForHide(){
+      if(document.hidden && musicOn){
+        wasPlaying = true;
+        /* pause real audio element */
+        if(customAudio && !customAudio.paused){ customAudio.pause(); }
+        /* silence + suspend the generated tone */
+        if(audioCtx){ try{ if(masterGain){ masterGain.gain.value = 0; } audioCtx.suspend(); }catch(e){} }
+        musicOn = false; reflectMusic();
+      } else if(!document.hidden && wasPlaying){
+        wasPlaying = false;
+        /* resume whatever was playing */
+        if(customAudio){
+          customAudio.play().then(function(){
+            musicOn = true; reflectMusic();
+            var v=0; var fade=setInterval(function(){ v=Math.min(0.65,v+0.05); customAudio.volume=v; if(v>=0.65)clearInterval(fade); },80);
+          }).catch(function(){});
+        } else if(audioCtx){
+          try{ audioCtx.resume(); }catch(e){}
+          if(masterGain){ masterGain.gain.setValueAtTime(0, audioCtx.currentTime); masterGain.gain.linearRampToValueAtTime(0.5, audioCtx.currentTime+0.8); }
+          musicOn = true; reflectMusic();
+        }
+      }
+    }
+    document.addEventListener('visibilitychange', pauseForHide);
+    /* extra safety for iOS Safari which sometimes uses pagehide/blur */
+    window.addEventListener('pagehide', function(){ if(musicOn){ wasPlaying=true; if(customAudio&&!customAudio.paused)customAudio.pause(); if(audioCtx){try{audioCtx.suspend();}catch(e){}} musicOn=false; reflectMusic(); } });
+  })();
+
   /* ================= COUNTDOWN ================= */
   (function(){
     /* Waleema is the main day: 28 Oct 2026, 7:00 PM IST. Change target here if needed. */
