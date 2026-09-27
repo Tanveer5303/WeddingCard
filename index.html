@@ -899,178 +899,54 @@
     /* NOTE: opening only happens via the Open button (seal), not by tapping elsewhere */
   })();
 
-  /* ================= MUSIC ================= */
-  /* ─────────────────────────────────────────────────────────────
-     HOW TO ADD YOUR OWN SONG (recommended — works great on Netlify):
-       1. Get a music file you have the rights to (royalty-free is safest;
-          see the notes I gave you). Rename it exactly:  music.mp3
-       2. Put music.mp3 in the SAME folder as this HTML file.
-       3. Deploy the folder to Netlify (drag the folder onto Netlify,
-          or connect your repo). That's it — the site will play music.mp3.
-
-     • You can list several filenames below; the first one that loads wins.
-     • If none are found, a gentle built-in instrumental plays instead,
-       so the button always does something.
-     • Do NOT use copyrighted Bollywood songs without a licence.
-     ───────────────────────────────────────────────────────────── */
-  /* Cache-busting: unique value each page load so no browser (esp. iOS Safari)
-     serves a stale music file. Replace music.mp3 and redeploy — nothing else. */
+  /* ================= MUSIC (plays ONLY if music.mp3 is present) ================= */
+  /* Put a royalty-free music.mp3 beside this file to enable music. If no file is
+     present, the music button is hidden and nothing plays. Cache-busting is
+     automatic each load so the newest file is always fetched. Do NOT use
+     copyrighted Bollywood songs without a licence. */
   var MUSIC_BUST = Date.now().toString(36) + Math.random().toString(36).slice(2,7);
-  var TRACK_CANDIDATES = ['music.mp3', 'music.ogg', 'assets/music.mp3'].map(function(u){
-    return u + '?cb=' + MUSIC_BUST;
-  });
-
-  var customAudio = null;      // the <audio> element (created lazily)
-  var customExists = null;     // null=unknown, true=a file plays, false=none
+  var TRACK_URL = 'music.mp3?cb=' + MUSIC_BUST;
+  var customAudio = null, musicAvailable = false, musicOn = false;
   var musicBtn = document.getElementById('musicBtn');
-  var musicOn = false;
-  var audioCtx = null, masterGain = null, melodyTimer = null;
-
   function reflectMusic(){ musicBtn.classList.toggle('playing', musicOn); }
 
-  /* Build an <audio> element (iOS-friendly: no preload, we play on user gesture).
-     We DON'T wait for canplaythrough — iOS often won't fire it until play() is
-     called from a tap, which was the bug that made iPhones fall back to the tone. */
+  /* hide the button until we confirm a real file exists */
+  if(musicBtn) musicBtn.style.display='none';
+
+  /* check if music.mp3 actually exists before showing the button */
+  (function checkMusic(){
+    try{
+      var probe=new Audio();
+      probe.preload='metadata';
+      probe.addEventListener('loadedmetadata', function(){ musicAvailable=true; if(musicBtn) musicBtn.style.display=''; }, {once:true});
+      probe.addEventListener('error', function(){ musicAvailable=false; if(musicBtn) musicBtn.style.display='none'; }, {once:true});
+      probe.src=TRACK_URL;
+    }catch(e){ musicAvailable=false; }
+  })();
+
   function buildAudio(){
     if(customAudio) return customAudio;
-    var a = new Audio();
-    a.loop = true;
-    a.preload = 'none';           // iOS ignores/limits preload anyway
+    var a=new Audio(); a.loop=true; a.preload='none';
     a.setAttribute('playsinline',''); a.setAttribute('webkit-playsinline','');
-    a.crossOrigin = 'anonymous';
-    a.src = TRACK_CANDIDATES[0];   // primary: music.mp3?cb=...
-    customAudio = a;
-    return a;
+    a.src=TRACK_URL;
+    customAudio=a; return a;
   }
-
-  function initAudio(){
-    if(audioCtx) return;
-    var AC = window.AudioContext || window.webkitAudioContext;
-    if(!AC) return;
-    audioCtx = new AC();
-    masterGain = audioCtx.createGain();
-    masterGain.gain.value = 0.0;
-    masterGain.connect(audioCtx.destination);
-  }
-
-  /* a soft note with gentle attack/decay; type selectable for timbre */
-  function playNote(freq, time, dur, vol, type){
-    if(!audioCtx) return;
-    var osc = audioCtx.createOscillator();
-    var g = audioCtx.createGain();
-    osc.type = type||'sine';
-    osc.frequency.value = freq;
-    var osc2 = audioCtx.createOscillator();
-    var g2 = audioCtx.createGain();
-    osc2.type='triangle'; osc2.frequency.value=freq*2; g2.gain.value=0;
-    osc.connect(g); osc2.connect(g2);
-    g.connect(masterGain); g2.connect(masterGain);
-    var a=0.05, r=dur;
-    g.gain.setValueAtTime(0,time);
-    g.gain.linearRampToValueAtTime(vol,time+a);
-    g.gain.exponentialRampToValueAtTime(0.0001,time+r);
-    g2.gain.setValueAtTime(0,time);
-    g2.gain.linearRampToValueAtTime(vol*0.3,time+a);
-    g2.gain.exponentialRampToValueAtTime(0.0001,time+r*0.8);
-    osc.start(time); osc.stop(time+r+0.05);
-    osc2.start(time); osc2.stop(time+r+0.05);
-  }
-
-  /* soft sustained pad chord for lush filmi warmth */
-  function playPad(freqs, time, dur, vol){
-    if(!audioCtx) return;
-    freqs.forEach(function(f){
-      var o=audioCtx.createOscillator(), g=audioCtx.createGain();
-      o.type='sine'; o.frequency.value=f;
-      o.connect(g); g.connect(masterGain);
-      g.gain.setValueAtTime(0,time);
-      g.gain.linearRampToValueAtTime(vol,time+0.6);
-      g.gain.linearRampToValueAtTime(vol,time+dur-0.8);
-      g.gain.exponentialRampToValueAtTime(0.0001,time+dur);
-      o.start(time); o.stop(time+dur+0.05);
-    });
-  }
-
-  /* Note frequencies (a warm romantic minor-ish scale, filmi flavour) */
-  var N={ G3:196.00,A3:220.00,Bb3:233.08,C4:261.63,D4:293.66,Eb4:311.13,F4:349.23,
-          G4:392.00,A4:440.00,Bb4:466.16,C5:523.25,D5:587.33,Eb5:622.25,F5:698.46,G5:783.99 };
-
-  /* a flowing, gentle romantic melody phrase (original) */
-  function scheduleMelody(){
-    if(!audioCtx) return;
-    var t = audioCtx.currentTime + 0.1;
-    var b = 0.5; // beat
-    // melody: [note, beats]
-    var mel = [
-      ['C5',1],['D5',1],['Eb5',1.5],['D5',.5],['C5',1],['Bb4',1],
-      ['C5',1],['G4',2],['A4',1],['Bb4',1],
-      ['C5',1],['Bb4',.5],['A4',.5],['G4',1.5],['F4',.5],['G4',2],
-      ['Eb5',1],['D5',1],['C5',1.5],['Bb4',.5],['C5',1],['D5',1],
-      ['C5',1],['G4',3]
-    ];
-    var pos = t, total=0;
-    // chords underneath (Cm - Ab - Eb - Bb feel), each 4 beats
-    var chords=[[N.C4,N.Eb4,N.G4],[N.Bb3,N.D4,N.F4],[N.Eb4,N.G4,N.Bb4],[N.G3,N.Bb3,N.D4]];
-    var barLen=4*b, bars=Math.ceil(mel.reduce(function(s,n){return s+n[1];},0)/4);
-    for(var i=0;i<bars;i++){ playPad(chords[i%chords.length], t+i*barLen, barLen+0.2, 0.05); }
-    // soft bass pulse
-    for(var j=0;j<bars*4;j++){ if(j%2===0){ var ch=chords[Math.floor(j/4)%chords.length]; playNote(ch[0]/2, t+j*b, b*1.4, 0.06,'sine'); } }
-    // melody notes
-    mel.forEach(function(n){
-      playNote(N[n[0]], pos, Math.max(0.5,n[1]*b*1.05), 0.15, 'triangle');
-      pos += n[1]*b; total += n[1]*b;
-    });
-    melodyTimer = setTimeout(scheduleMelody, total*1000 - 150);
-  }
-
   function startMusic(){
-    /* Try the real audio file FIRST, directly on the user's tap (this is when
-       iOS allows playback). Only fall back to the generated tone if it truly
-       fails to play. */
-    var a = buildAudio();
-    a.volume = 0;
-    var p = a.play();
-    if(p && p.then){
-      p.then(function(){
-        customExists = true;
-        musicOn = true; reflectMusic();
-        var v=0; var fade=setInterval(function(){ v=Math.min(0.65,v+0.05); a.volume=v; if(v>=0.65)clearInterval(fade); },80);
-      }).catch(function(){
-        /* file missing or blocked -> gentle built-in instrumental */
-        customExists = false; startGenerated();
-      });
-    } else {
-      /* very old browser: assume it plays */
-      customExists = true; musicOn = true; a.volume = 0.6; reflectMusic();
-    }
-  }
-  function startGenerated(){
-    initAudio();
-    if(!audioCtx) return;
-    if(audioCtx.state==='suspended') audioCtx.resume();
-    masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
-    masterGain.gain.setValueAtTime(masterGain.gain.value, audioCtx.currentTime);
-    masterGain.gain.linearRampToValueAtTime(0.5, audioCtx.currentTime+1.2);
-    if(!melodyTimer) scheduleMelody();
-    musicOn = true; reflectMusic();
+    if(!musicAvailable) return;           /* no file -> do nothing */
+    var a=buildAudio(); a.volume=0;
+    var p=a.play();
+    if(p&&p.then){
+      p.then(function(){ musicOn=true; reflectMusic();
+        var v=0,f=setInterval(function(){v=Math.min(0.65,v+0.05);a.volume=v;if(v>=0.65)clearInterval(f);},80);
+      }).catch(function(){ musicOn=false; reflectMusic(); });
+    } else { musicOn=true; a.volume=0.6; reflectMusic(); }
   }
   function stopMusic(){
-    if(customAudio && !customAudio.paused){
-      var v=customAudio.volume; var fade=setInterval(function(){ v=Math.max(0,v-0.08); customAudio.volume=v; if(v<=0){clearInterval(fade);customAudio.pause();} },60);
-      musicOn=false; reflectMusic(); return;
-    }
-    if(!audioCtx){ musicOn=false; reflectMusic(); return; }
-    masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
-    masterGain.gain.setValueAtTime(masterGain.gain.value, audioCtx.currentTime);
-    masterGain.gain.linearRampToValueAtTime(0.0, audioCtx.currentTime+0.6);
-    clearTimeout(melodyTimer); melodyTimer=null;
-    musicOn = false; reflectMusic();
+    if(customAudio && !customAudio.paused){ var v=customAudio.volume,f=setInterval(function(){v=Math.max(0,v-0.08);customAudio.volume=v;if(v<=0){clearInterval(f);customAudio.pause();}},60); }
+    musicOn=false; reflectMusic();
   }
   function tryPlayMusic(){ startMusic(); }
-
-  musicBtn.addEventListener('click', function(){
-    if(musicOn) stopMusic(); else startMusic();
-  });
+  if(musicBtn) musicBtn.addEventListener('click', function(){ if(musicOn) stopMusic(); else startMusic(); });
   reflectMusic();
 
   /* ---- pause music when the user leaves (switches apps, locks screen, hides tab) ---- */
@@ -1079,29 +955,21 @@
     function pauseForHide(){
       if(document.hidden && musicOn){
         wasPlaying = true;
-        /* pause real audio element */
         if(customAudio && !customAudio.paused){ customAudio.pause(); }
-        /* silence + suspend the generated tone */
-        if(audioCtx){ try{ if(masterGain){ masterGain.gain.value = 0; } audioCtx.suspend(); }catch(e){} }
         musicOn = false; reflectMusic();
       } else if(!document.hidden && wasPlaying){
         wasPlaying = false;
-        /* resume whatever was playing */
         if(customAudio){
           customAudio.play().then(function(){
             musicOn = true; reflectMusic();
             var v=0; var fade=setInterval(function(){ v=Math.min(0.65,v+0.05); customAudio.volume=v; if(v>=0.65)clearInterval(fade); },80);
           }).catch(function(){});
-        } else if(audioCtx){
-          try{ audioCtx.resume(); }catch(e){}
-          if(masterGain){ masterGain.gain.setValueAtTime(0, audioCtx.currentTime); masterGain.gain.linearRampToValueAtTime(0.5, audioCtx.currentTime+0.8); }
-          musicOn = true; reflectMusic();
         }
       }
     }
     document.addEventListener('visibilitychange', pauseForHide);
     /* extra safety for iOS Safari which sometimes uses pagehide/blur */
-    window.addEventListener('pagehide', function(){ if(musicOn){ wasPlaying=true; if(customAudio&&!customAudio.paused)customAudio.pause(); if(audioCtx){try{audioCtx.suspend();}catch(e){}} musicOn=false; reflectMusic(); } });
+    window.addEventListener('pagehide', function(){ if(musicOn){ wasPlaying=true; if(customAudio&&!customAudio.paused)customAudio.pause(); musicOn=false; reflectMusic(); } });
   })();
 
   /* ================= COUNTDOWN ================= */
@@ -1174,8 +1042,11 @@
       msg+='• Guests: '+count+'\n';
       msg+='• Attending: '+(events.length? events.join(', ') : 'Waleema')+'\n\n';
       msg+='Looking forward to celebrating with you! 💐';
-      var url='https://wa.me/919989208609?text='+encodeURIComponent(msg);
-      window.open(url,'_blank');
+      /* Use direct navigation (more reliable than window.open, which pop-up
+         blockers and in-app browsers often block). Works whether or not the
+         guest has saved the number. */
+      var url='https://api.whatsapp.com/send?phone=919989208609&text='+encodeURIComponent(msg);
+      window.location.href=url;
     });
   })();
 
